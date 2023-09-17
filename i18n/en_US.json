@@ -1,0 +1,16 @@
+{
+    "core.run.compilationTimeout" : "Compilation Timeout.",
+    "core.run.compilationError" : "{err}\nCompile finished with non-zero exit code {code}.",
+    "core.run.compilationFinished" : "Compiled successfully.",
+    "core.run.timeLimitExceeded" : "Time limit exceeded.",
+    "core.run.memoryLimitExceeded" : "Memory limit exceeded.",
+    "core.run.programRuntimeError" : "Program finished with non-zero exit code {code}.",
+    "core.run.nextJudge" : "Ready to proceed to the next step.",
+
+    "core.judge.rowUnmatched" : "Expected {arow} rows, but {orow} rows found.",
+    "core.judge.columnUnmatched" : "On row {row}, expected {acol} columns, but {ocol} columns found.",
+    "core.judge.valueUnmatched" : "On row {row} column {col}, expected \"{aval}\", but \"{oval}\" found.",
+    "core.judge.valueNotReal" : "On row {row} column {col}, cannot parse \"{value}\" as a real.",
+    "core.judge.realUnmatched" : "On row {row} column {col}, expected \"{aval}\", but \"{oval}\" found, diff is {diff}.",
+    "core.judge.accepted" : "OK for {row} rows."
+}
