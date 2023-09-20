@@ -12,5 +12,16 @@
     "core.judge.valueUnmatched" : "On row {row} column {col}, expected \"{aval}\", but \"{oval}\" found.",
     "core.judge.valueNotReal" : "On row {row} column {col}, cannot parse \"{value}\" as a real.",
     "core.judge.realUnmatched" : "On row {row} column {col}, expected \"{aval}\", but \"{oval}\" found, diff is {diff}.",
-    "core.judge.accepted" : "OK for {row} rows."
+    "core.judge.accepted" : "OK for {row} rows.",
+
+    "core.signals.cf" : "Compilation Finished",
+    "core.signals.ce" : "Compilation Error",
+    "core.signals.ct" : "Compilation Timeout",
+    "core.signals.tle" : "Time Limit Exceeded",
+    "core.signals.mle" : "Memory Limit Exceeded",
+    "core.signals.re" : "Runtime Error",
+    "core.signals.nj" : "Run Successfully",
+    "core.signals.ac" : "Accepted",
+    "core.signals.wa" : "Wrong Answer",
+    "core.signals.ia" : "Invalid Answer"
 }

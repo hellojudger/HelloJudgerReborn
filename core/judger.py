@@ -1,22 +1,8 @@
 # pylint: disable=all
 from abc import ABC, abstractmethod
-from core.run import CoreSignal
+from core.signals import *
 from i18n import _
 import re
-
-
-class JudgeSignal(CoreSignal):
-    pass
-
-class Accepted(JudgeSignal):
-    signame = "ac"
-
-class WrongAnswer(JudgeSignal):
-    signame = "wa"
-
-class InvalidAnswer(JudgeSignal):
-    signame = "ia"
-
 
 class Judger(ABC):
     def __init__(self, *args, **kwargs):

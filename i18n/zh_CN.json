@@ -12,5 +12,16 @@
     "core.judge.valueUnmatched" : "在第 {row} 行第 {col} 列，期望 \"{aval}\"，但找到了 \"{oval}\"。",
     "core.judge.valueNotReal" : "在第 {row} 行第 {col} 列，找到了一个非法的实数 \"{value}\"。",
     "core.judge.realUnmatched" : "在第 {row} 行第 {col} 列，期望 \"{aval}\"，但找到了 \"{oval}\"，误差为 {diff}。",
-    "core.judge.accepted" : "匹配成功，共 {row} 行。"
+    "core.judge.accepted" : "匹配成功，共 {row} 行。",
+
+    "core.signals.cf" : "编译成功",
+    "core.signals.ce" : "编译错误",
+    "core.signals.ct" : "编译超时",
+    "core.signals.tle" : "超出时间限制",
+    "core.signals.mle" : "超出空间限制",
+    "core.signals.re" : "运行时错误",
+    "core.signals.nj" : "运行成功",
+    "core.signals.ac" : "答案正确",
+    "core.signals.wa" : "答案错误",
+    "core.signals.ia" : "答案文件不合法"
 }

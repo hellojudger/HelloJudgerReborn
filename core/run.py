@@ -2,6 +2,7 @@
 import subprocess
 import psutil
 from os import PathLike
+from core.signals import *
 from core.config import CORE
 from os.path import abspath
 from i18n import _
@@ -15,53 +16,6 @@ class Limits:
     def __init__(self, time_limit : int, memory_limit : int):
         self.memory_limit = memory_limit
         self.time_limit = time_limit
-
-
-class CoreSignal:
-    signame : str = ""
-    message : str = ""
-
-    def __init__(self, message : str):
-        self.message = message
-    
-    def __str__(self):
-        return self.message
-
-    def type(self):
-        return self.signame
-
-class CompilationSignal(CoreSignal):
-    pass
-
-class CompilationFinished(CompilationSignal):
-    signame = "cf"
-
-class CompilationError(CompilationSignal):
-    signame = "ce"
-
-class CompilationTimeout(CompilationSignal):
-    signame = "ct"
-
-class InterpretionSignal(CoreSignal):
-    signame = ""
-    time_used = 0
-    memory_used = 0
-
-    def __str__(self):
-        return "{} Time used: {} ms Memory used: {} MB.".format(self.message, self.time_used, self.memory_used / 1024 / 1024)
-
-class TimeLimitExceeded(InterpretionSignal):
-    signame = "tle"
-
-class MemoryLimitExceeded(InterpretionSignal):
-    signame = "mle"
-
-class ProgramRuntimeError(InterpretionSignal):
-    signame = "re"
-
-class NextJudge(InterpretionSignal):
-    signame = "nj"
-    output = ""
 
 
 class ProgammingLanguage:
@@ -85,10 +39,10 @@ class ProgammingLanguage:
                 process.kill()
                 break
         process.terminate()
-        stderr = process.communicate()[1]
         if killed:
             return CompilationTimeout(_("core.run.compilationTimeout"))
         if process.returncode != 0:
+            stderr = process.communicate()[1]
             err = stderr.decode("utf-8")
             return CompilationError(_("core.run.compilationError").format(err=err, code=process.returncode))
         return CompilationFinished(_("core.run.compilationFinished"))
@@ -125,8 +79,6 @@ class ProgammingLanguage:
                 process.kill()
                 break
         proc.terminate()
-        stdout = proc.communicate()[0]
-        obj = None
         if tle:
             obj = TimeLimitExceeded(_("core.run.timeLimitExceeded"))
         elif mle:
@@ -134,6 +86,7 @@ class ProgammingLanguage:
         elif proc.returncode != 0:
             obj = ProgramRuntimeError(_("core.run.programRuntimeError").format(code=proc.returncode))
         else:
+            stdout = proc.communicate()[0]
             obj = NextJudge(_("core.run.nextJudge"))
             obj.output = stdout.decode("utf-8")
         obj.memory_used = memory

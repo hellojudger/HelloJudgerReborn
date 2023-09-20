@@ -2,5 +2,5 @@
 using namespace std;
 
 int main(){
-    return 1;
+    while(1);
 }
