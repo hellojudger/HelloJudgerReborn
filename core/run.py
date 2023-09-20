@@ -3,6 +3,7 @@ import subprocess
 import psutil
 from os import PathLike
 from core.config import CORE
+from os.path import abspath
 from i18n import _
 import time
 
@@ -66,12 +67,10 @@ class NextJudge(InterpretionSignal):
 class ProgammingLanguage:
     compile_format : str = ""
     interpret_format : str = ""
-    interpret_shell : bool = True
 
     def __init__(self, compile_format : str, interpret_format : str, interpret_shell : bool = False):
         self.compile_format = compile_format
         self.interpret_format = interpret_format
-        self.interpret_shell = interpret_shell
 
     def run_compile(self, source : PathLike, executable : PathLike):
         compile_command = self.compile_format.format(source=source, executable=executable)
@@ -86,7 +85,7 @@ class ProgammingLanguage:
                 process.kill()
                 break
         process.terminate()
-        stdout, stderr = process.communicate()
+        stderr = process.communicate()[1]
         if killed:
             return CompilationTimeout(_("core.run.compilationTimeout"))
         if process.returncode != 0:
@@ -95,11 +94,12 @@ class ProgammingLanguage:
         return CompilationFinished(_("core.run.compilationFinished"))
 
     def run_interpret(self, executable : PathLike, limits : Limits, stdin : PathLike = None):
+        executable = abspath(executable)
         if stdin is not None:
             stdin = open(stdin)
         else:
             stdin = subprocess.PIPE
-        proc = subprocess.Popen(executable, stdin=stdin, stdout=subprocess.PIPE, shell=self.interpret_shell, stderr=subprocess.PIPE)
+        proc = subprocess.Popen(executable, stdin=stdin, stdout=subprocess.PIPE, shell=True, stderr=subprocess.PIPE)
         process = psutil.Process(proc.pid)
         start = time.perf_counter()
         end = start
@@ -125,7 +125,7 @@ class ProgammingLanguage:
                 process.kill()
                 break
         proc.terminate()
-        stdout, stderr = proc.communicate()
+        stdout = proc.communicate()[0]
         obj = None
         if tle:
             obj = TimeLimitExceeded(_("core.run.timeLimitExceeded"))

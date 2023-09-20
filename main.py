@@ -1,10 +1,6 @@
-from core.judger import RowCompare
-from i18n import switch_language
+# pylint:disable = all
+from core.run import CPP_14, Limits
 
-cmp = RowCompare()
 
-print(cmp.judge("1\n2\n3", "1\n2\n4 5"))
-
-switch_language("en_US")
-
-print(cmp.judge("1\n2\n3", "1\n2\n4 5"))
+print(CPP_14.run_compile("1.cpp", "1.exe"))
+print(CPP_14.run_interpret("1.exe", Limits(1000, 1024 * 1024)))
