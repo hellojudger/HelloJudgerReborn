@@ -1,5 +1,5 @@
+# pylint: disable=all
 import simplejson as json
-from os import PathLike
 
 class CoreConfiguration:
     __path = "config/core.json"

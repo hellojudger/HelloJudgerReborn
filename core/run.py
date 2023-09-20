@@ -1,5 +1,4 @@
-# 描述如何运行和编译一个程序的库
-
+# pylint: disable=all
 import subprocess
 import psutil
 from os import PathLike

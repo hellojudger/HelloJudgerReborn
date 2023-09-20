@@ -1,3 +1,4 @@
+# pylint: disable=all
 from abc import ABC, abstractmethod
 from core.run import CoreSignal
 from i18n import _
