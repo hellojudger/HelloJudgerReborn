@@ -1,7 +1,15 @@
 # pylint: disable=all
 from abc import ABC, abstractmethod
+import xml.etree.cElementTree as cElementTree
 from core.signals import *
 from i18n import _
+from core.run import CPP_14, Limits
+from typing import Optional
+from core.config import CORE
+from os import mkdir
+from os.path import isdir, abspath
+import shutil
+from uuid import uuid4
 import re
 
 class Judger(ABC):
@@ -10,12 +18,12 @@ class Judger(ABC):
         self.kwargs = kwargs
     
     @abstractmethod
-    def judge(self, out : str, ans : str):
+    def judge(self, in_ : str, out : str, ans : str):
         pass
 
 
 class StrictCompare(Judger):
-    def judge(self, out : str, ans : str):
+    def judge(self, in_ : str, out : str, ans : str):
         out = out.splitlines()
         ans = ans.splitlines()
         if len(out) != len(ans):
@@ -50,7 +58,7 @@ def wash(string : str):
 
 
 class RowCompare(Judger):
-    def judge(self, out : str, ans : str):
+    def judge(self, in_ : str, out : str, ans : str):
         out = wash(out)
         ans = wash(ans)
         if(len(ans) != len(out)):
@@ -73,7 +81,7 @@ class RowCompare(Judger):
         return Accepted(_("core.judge.accepted").format(row=len(out)))
 
 class RealCompare(Judger):
-    def judge(self, out : str, ans : str):
+    def judge(self, in_ : str, out : str, ans : str):
         out = wash(out)
         ans = wash(ans)
         eps = pow(10, -self.kwargs.get("precision", 0))
@@ -112,3 +120,34 @@ class RealCompare(Judger):
                     )
         return Accepted(_("core.judge.accepted").format(row=len(out)))
 
+class TestlibJudger(Judger):
+    def judge(self, in_ : str, out : str, ans : str):
+        spj : Optional[str] = self.kwargs.get("path")
+        if spj is None:
+            return RowCompare().judge(in_, out, ans)
+        spj = abspath(spj)
+        if not isdir(CORE.testlib_sandbox):
+            mkdir(CORE.testlib_sandbox)
+        uuid = str(uuid4())
+        shutil.copyfile(spj, abspath("{}/{}.exe".format(CORE.testlib_sandbox, uuid)))
+        spj = abspath("{}/{}.exe".format(CORE.testlib_sandbox, uuid))
+        inf = abspath("{}/{}.in".format(CORE.testlib_sandbox, uuid))
+        ouf = abspath("{}/{}.out".format(CORE.testlib_sandbox, uuid))
+        ansf = abspath("{}/{}.ans".format(CORE.testlib_sandbox, uuid))
+        resf = abspath("{}/{}.xml".format(CORE.testlib_sandbox, uuid))
+        with open(inf, "w", encoding="utf-8") as f:
+            f.write(in_)
+        with open(ouf, "w", encoding="utf-8") as f:
+            f.write(out)
+        with open(ansf, "w", encoding="utf-8") as f:
+            f.write(ans)
+        print("{} {} {} {} {} -appes".format(spj, inf, ouf, ansf, resf))
+        sig = CPP_14.run_interpret(
+            "{} {} {} {} {} -appes".format(spj, inf, ouf, ansf, resf), 
+            Limits(CORE.spj_time_limit, CORE.spj_memory_limit)
+        )
+        print(sig)
+        tree = cElementTree.parse(resf)
+        outcome = tree.getroot().attrib["outcome"]
+        if outcome == "accepted":
+            return Accepted()

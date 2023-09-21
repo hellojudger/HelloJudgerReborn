@@ -24,5 +24,6 @@
     "core.signals.nj" : "Run Successfully",
     "core.signals.ac" : "Accepted",
     "core.signals.wa" : "Wrong Answer",
-    "core.signals.ia" : "Invalid Answer"
+    "core.signals.jf" : "Judge Failed",
+    "core.signals.pc" : "Partially Correct"
 }

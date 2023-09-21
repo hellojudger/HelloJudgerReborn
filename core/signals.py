@@ -5,7 +5,7 @@ class CoreSignal:
     signame : str = ""
     message : str = ""
 
-    def __init__(self, message : str):
+    def __init__(self, message : str = ""):
         self.message = message
     
     def __str__(self):
@@ -49,6 +49,7 @@ class MemoryLimitExceeded(InterpretionSignal):
 
 class ProgramRuntimeError(InterpretionSignal):
     signame = "re"
+    code = 0
 
 class NextJudge(InterpretionSignal):
     signame = "nj"
@@ -57,7 +58,10 @@ class NextJudge(InterpretionSignal):
 class JudgeSignal(CoreSignal):
     pass
 
-class Accepted(JudgeSignal):
+class TestlibSignal(JudgeSignal):
+    pass
+
+class Accepted(TestlibSignal):
     signame = "ac"
 
 class WrongAnswer(JudgeSignal):
@@ -65,3 +69,9 @@ class WrongAnswer(JudgeSignal):
 
 class JudgeFailed(JudgeSignal):
     signame = "jf"
+
+class PartiallyCorrect(TestlibSignal):
+    signame = "pc"
+    is_points = False
+    points = 0
+    partially = 0.0

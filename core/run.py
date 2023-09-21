@@ -1,10 +1,11 @@
 # pylint: disable=all
 import subprocess
 import psutil
-from os import PathLike
+from os import PathLike, system as run_shell
 from core.signals import *
 from core.config import CORE
 from os.path import abspath
+from platform import system
 from i18n import _
 import time
 
@@ -22,7 +23,7 @@ class ProgammingLanguage:
     compile_format : str = ""
     interpret_format : str = ""
 
-    def __init__(self, compile_format : str, interpret_format : str, interpret_shell : bool = False):
+    def __init__(self, compile_format : str, interpret_format : str):
         self.compile_format = compile_format
         self.interpret_format = interpret_format
 
@@ -49,6 +50,8 @@ class ProgammingLanguage:
 
     def run_interpret(self, executable : PathLike, limits : Limits, stdin : PathLike = None):
         executable = abspath(executable)
+        if system() == "Linux":
+            run_shell("chmod +x {}".format(executable.split(' ')[0]))
         if stdin is not None:
             stdin = open(stdin)
         else:
@@ -85,6 +88,7 @@ class ProgammingLanguage:
             obj = MemoryLimitExceeded(_("core.run.memoryLimitExceeded"))
         elif proc.returncode != 0:
             obj = ProgramRuntimeError(_("core.run.programRuntimeError").format(code=proc.returncode))
+            obj.code = proc.returncode
         else:
             stdout = proc.communicate()[0]
             obj = NextJudge(_("core.run.nextJudge"))

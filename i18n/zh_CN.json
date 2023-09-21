@@ -24,5 +24,6 @@
     "core.signals.nj" : "运行成功",
     "core.signals.ac" : "答案正确",
     "core.signals.wa" : "答案错误",
-    "core.signals.ia" : "答案文件不合法"
+    "core.signals.jf" : "评测失败",
+    "core.signals.pc" : "部分正确"
 }
