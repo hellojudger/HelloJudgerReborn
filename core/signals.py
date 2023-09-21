@@ -63,5 +63,5 @@ class Accepted(JudgeSignal):
 class WrongAnswer(JudgeSignal):
     signame = "wa"
 
-class InvalidAnswer(JudgeSignal):
-    signame = "ia"
+class JudgeFailed(JudgeSignal):
+    signame = "jf"

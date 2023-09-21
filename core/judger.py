@@ -99,8 +99,8 @@ class RealCompare(Judger):
                 try:
                     y = float(ans[i][j])
                 except ValueError:
-                    return InvalidAnswer(
-                        _("core.judge.valueNotReal")
+                    return JudgeFailed(
+                        _("core.judge.answerValueNotReal")
                         .format(row=i+1, col=j+1, value=ans[i][j])
                     )
                 if abs(x - y) > eps:

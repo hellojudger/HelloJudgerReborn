@@ -11,6 +11,7 @@
     "core.judge.columnUnmatched" : "On row {row}, expected {acol} columns, but {ocol} columns found.",
     "core.judge.valueUnmatched" : "On row {row} column {col}, expected \"{aval}\", but \"{oval}\" found.",
     "core.judge.valueNotReal" : "On row {row} column {col}, cannot parse \"{value}\" as a real.",
+    "core.judge.answerValueNotReal" : "On row {row} column {col} in the answer file, cannot parse \"{value}\" as a real.",
     "core.judge.realUnmatched" : "On row {row} column {col}, expected \"{aval}\", but \"{oval}\" found, diff is {diff}.",
     "core.judge.accepted" : "OK for {row} rows.",
 
