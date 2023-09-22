@@ -55,3 +55,6 @@ for i in range(len(tasks)):
         fail += 1
 
 print(_("resdown.end").format(done = done, fail = fail))
+
+print(_("resdown.pause"))
+input()

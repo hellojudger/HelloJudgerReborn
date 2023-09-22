@@ -31,5 +31,6 @@
     "resdown.task" : "任务 #{id}: {name}",
     "resdown.done" : "成功",
     "resdown.fail" : "失败",
-    "resdown.end" : "下载结束。{done} 件任务成功，{fail} 件任务失败。"
+    "resdown.end" : "下载结束。{done} 件任务成功，{fail} 件任务失败。",
+    "resdown.pause" : "按下 <Enter> 键以退出本程序。"
 }

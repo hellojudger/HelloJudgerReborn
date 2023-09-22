@@ -17,3 +17,11 @@ This Python project is open source under the GNU Affero General Public License (
 - 当您对本项目进行更改后，我们有权将您的代码并入我们的代码中。
 - After you make changes to this project, we have the right to merge your code into our code.
 
+# 安装与启动 / Install and Launch
+
+- 直接下载源码。
+- Just download the source code.
+- 运行 `resdown.py` 以下载资源。注意，需要从 Github 下载资源。该程序只需要运行一次。
+- Run `resdown.py` to download resources.This program don't need to run twice.
+- 运行主程序 `main.py`。
+- Run the main program `main.py`.

@@ -31,5 +31,6 @@
     "resdown.task" : "Task #{id}: {name}",
     "resdown.done" : "done",
     "resdown.fail" : "failed",
-    "resdown.end" : "Finished. {done} task(s) done, {fail} task(s) failed."
+    "resdown.end" : "Finished. {done} task(s) done, {fail} task(s) failed.",
+    "resdown.pause" : "Press <Enter> to quit this program."
 }
