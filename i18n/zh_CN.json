@@ -25,5 +25,11 @@
     "core.signals.ac" : "答案正确",
     "core.signals.wa" : "答案错误",
     "core.signals.jf" : "评测失败",
-    "core.signals.pc" : "部分正确"
+    "core.signals.pc" : "部分正确",
+
+    "resdown.ready" : "下面将为您下载 Hello Judger Reborn 所需要的资源文件。",
+    "resdown.task" : "任务 #{id}: {name}",
+    "resdown.done" : "成功",
+    "resdown.fail" : "失败",
+    "resdown.end" : "下载结束。{done} 件任务成功，{fail} 件任务失败。"
 }

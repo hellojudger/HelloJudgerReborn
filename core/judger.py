@@ -6,7 +6,7 @@ from i18n import _
 from core.run import CPP_14, Limits
 from typing import Optional
 from core.config import CORE
-from os import mkdir
+from os import mkdir, remove
 from os.path import isdir, abspath
 import shutil
 from uuid import uuid4
@@ -141,13 +141,35 @@ class TestlibJudger(Judger):
             f.write(out)
         with open(ansf, "w", encoding="utf-8") as f:
             f.write(ans)
-        print("{} {} {} {} {} -appes".format(spj, inf, ouf, ansf, resf))
         sig = CPP_14.run_interpret(
             "{} {} {} {} {} -appes".format(spj, inf, ouf, ansf, resf), 
             Limits(CORE.spj_time_limit, CORE.spj_memory_limit)
         )
-        print(sig)
         tree = cElementTree.parse(resf)
+        remove(spj);remove(inf);remove(ouf);remove(ansf);remove(resf)
         outcome = tree.getroot().attrib["outcome"]
-        if outcome == "accepted":
-            return Accepted()
+        code = 0
+        if sig == ProgramRuntimeError():
+            code = sig.code
+        text = tree.getroot().text
+        if text is None:
+            text = ""
+        message = outcome + " " + text
+        if code == 0:
+            return Accepted(message)
+        elif outcome == "points" and code < 16:
+            points = float(tree.getroot().attrib["points"])
+            obj = PartiallyCorrect(message)
+            obj.partially = points
+            obj.is_points = False
+            return obj
+        elif code in [1, 2, 4]:
+            return WrongAnswer(message)
+        elif code >= 16:
+            points = code - 16
+            obj = PartiallyCorrect(message)
+            obj.points = points
+            obj.is_points = True
+            return obj
+        else:
+            return JudgeFailed(message)

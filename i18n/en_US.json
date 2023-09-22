@@ -25,5 +25,11 @@
     "core.signals.ac" : "Accepted",
     "core.signals.wa" : "Wrong Answer",
     "core.signals.jf" : "Judge Failed",
-    "core.signals.pc" : "Partially Correct"
+    "core.signals.pc" : "Partially Correct",
+
+    "resdown.ready" : "Ready to download resources for Hello Judger Reborn.",
+    "resdown.task" : "Task #{id}: {name}",
+    "resdown.done" : "done",
+    "resdown.fail" : "failed",
+    "resdown.end" : "Finished. {done} task(s) done, {fail} task(s) failed."
 }

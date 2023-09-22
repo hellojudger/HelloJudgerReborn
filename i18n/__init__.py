@@ -1,6 +1,10 @@
+# pylint:disable = all
 from locale import getdefaultlocale
 from os import listdir
-import simplejson as json
+try:
+    import simplejson as json
+except (ImportError, ModuleNotFoundError):
+    import json
 
 locale = getdefaultlocale()[0]
 _languages = listdir("i18n/")
