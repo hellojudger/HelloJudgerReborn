@@ -1,12 +1,14 @@
 # pylint:disable = all
 
 import jsonschema
-from core.signals import ProblemFileInvalid, ProblemFileValid
+import simplejson as json
+from core.signals import *
 from i18n import _
+import os
 
 schema = {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id" : "hellojudger/reborn/problem.schema",
+    "$id" : "http://github.com/hellojudger/HellojudgerRreborn/problem.schema",
     "definitions": {
         "statement" : {
             "type" : "object",
@@ -133,13 +135,22 @@ schema = {
     "required" : ["name", "statements", "testcases", "subtasks", "type", "judger"]
 }
 
-def validate_format(problem : dict):
+def validate(path : str):
+    path = os.path.abspath(path)
+    try:
+        with open("{}/problem.json".format(path), "r", encoding="utf-8") as f:
+            problem = json.load(f)
+    except Exception as e:
+        return ProblemFileInvalid(repr(e))
     try:
         jsonschema.validate(problem, schema)
     except jsonschema.ValidationError as err:
         return ProblemFileInvalid(str(err))
     if problem["type"] == "interactive_noip" and problem.get("interactive_library") is None:
-        return ProblemFileInvalid(_("core.problem_validator.interactiveNoLibrary"))
+        return ProblemFileInvalid(_("core.problem_validator.interactiveNoLibrary").format(lib = problem.get("interactive_library")))
+    if problem["type"] == "interactive_noip":
+        if not os.path.isfile("{}/libraries/{}".format(path, problem.get("interactive_library"))):
+            return ProblemFileInvalid(_("core.problem_validator.interactiveLibraryNotFound"))
     for i in problem["testcases"]:
         if i["subtask"] > len(problem["subtasks"]):
             return ProblemFileInvalid(_("core.problem_validator.subtaskIdInvalid").format(sid = i["subtask"]))
@@ -151,4 +162,14 @@ def validate_format(problem : dict):
         return ProblemFileInvalid(_("core.problem_validator.realJudgerWithoutPrecision"))
     if problem["judger"]["id"] == "testlib" and problem["judger"].get("path") is None:
         return ProblemFileInvalid(_("core.problem_validator.testlibJudgerWithoutPath"))
+    if not problem["judger"]["id"] == "testlib" and os.path.isfile("{}/libraries/{}".format(path, problem["judger"].get("path"))):
+        return ProblemFileInvalid(_("core.problem_validator.testlibJudgerNotFound").format(lib = problem["judger"].get("path")))
+    for i in problem["statements"]:
+        if not os.path.isfile("{}/resources/{}".format(path, i["path"])):
+            return ProblemFileInvalid(_("core.problem_validator.statementNotFound").format(path = i["path"]))
+    for i in problem["testcases"]:
+        if not os.path.isfile("{}/data/{}".format(path, i["in"])):
+            return ProblemFileInvalid(_("core.problem_validator.inNotFound").format(inf = i["in"]))
+        if not os.path.isfile("{}/data/{}".format(path, i["out"])):
+            return ProblemFileInvalid(_("core.problem_validator.outNotFound").format(ouf = i["out"]))
     return ProblemFileValid(_("core.problem_validator.pfv"))

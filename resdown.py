@@ -80,6 +80,7 @@ tasks.append(Resource(
 ))
 tasks.append(Module("psutil"))
 tasks.append(Module("simplejson"))
+tasks.append(Module("jsonschema"))
 
 done = 0
 fail = 0

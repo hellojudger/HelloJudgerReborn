@@ -1,5 +1,6 @@
 {
     "name" : "测试题目",
+    "type" : "traditional",
     "statements" : [
         {
             "type" : "md",
@@ -13,7 +14,7 @@
             "out" : "1.out",
             "time" : 1000,
             "memory" : 1073741824,
-            "mark" : 100,
+            "mark" : 50,
             "subtask" : 1
         },
         {
@@ -21,7 +22,7 @@
             "out" : "2.out",
             "time" : 1000,
             "memory" : 1073741824,
-            "mark" : 100,
+            "mark" : 50,
             "subtask" : 1
         },
         {
@@ -29,14 +30,21 @@
             "out" : "3.out",
             "time" : 1000,
             "memory" : 1073741824,
-            "mark" : 100,
+            "mark" : 50,
             "subtask" : 2
         }
     ],
     "subtasks" : [
         {
-            "method" : "sum",
+            "method" : "min",
             "required" : []
+        },
+        {
+            "method" : "sum",
+            "required" : [1]
         }
-    ]
+    ],
+    "judger" : {
+        "id" : "row"
+    }
 }

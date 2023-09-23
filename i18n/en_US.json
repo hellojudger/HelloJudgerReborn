@@ -30,10 +30,15 @@
     "core.signals.pfv" : "Problem File Valid",
 
     "core.problem_validator.interactiveNoLibrary" : "The interactive problem has not been assigned an interactive library.",
+    "core.problem_validator.interactiveLibraryNotFound" : "The interactive library {lib} was not found.",
     "core.problem_validator.subtaskIdInvalid" : "Subtask ID {sid} is invalid.",
     "core.problem_validator.subtaskIdInvalidInRequired" : "One of requirment(s) of the subtask {sid} is greater than or equal to {sid}.",
     "core.problem_validator.realJudgerWithoutPrecision" : "The problem using real number judging method does not specify precision.",
     "core.problem_validator.testlibJudgerWithoutPath" : "The problem using Testlib Checker judging method does not specify a Checker path.",
+    "core.problem_validator.testlibJudgerNotFound" : "Testlib Checker {lib} was not found.",
+    "core.problem_validator.statementNotFound" : "A statement file {path} was not found.",
+    "core.problem_validator.inNotFound" : "An input file {inf} was not found.",
+    "core.problem_validator.outNotFound" : "An output file {ouf} was not found.",
     "core.problem_validator.pfv" : "Problem file is valid.",
 
     "resdown.ready" : "Ready to download resources for Hello Judger Reborn.",

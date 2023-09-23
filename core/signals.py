@@ -79,8 +79,11 @@ class PartiallyCorrect(TestlibSignal):
 class ProblemSignal(CoreSignal):
     pass
 
-class ProblemFileInvalid(CoreSignal):
+class ProblemFileInvalid(ProblemSignal):
     signame = "pfi"
 
-class ProblemFileValid(CoreSignal):
+class ProblemFileValid(ProblemSignal):
     signame = "pfv"
+
+class Skipped(CoreSignal):
+    signame = "sk"

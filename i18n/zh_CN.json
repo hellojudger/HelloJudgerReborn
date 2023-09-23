@@ -30,10 +30,15 @@
     "core.signals.pfv" : "题目文件合法",
 
     "core.problem_validator.interactiveNoLibrary" : "交互题没有指定交互库。",
+    "core.problem_validator.interactiveLibraryNotFound" : "交互库 {lib} 未找到。",
     "core.problem_validator.subtaskIdInvalid" : "子任务编号 {sid} 不合法。",
     "core.problem_validator.subtaskIdInvalidInRequired" : "子任务 {sid} 的某一个依赖子任务的编号大于等于 {sid}。",
     "core.problem_validator.realJudgerWithoutPrecision" : "使用实数匹配模式的题目没有指定匹配精度。",
     "core.problem_validator.testlibJudgerWithoutPath" : "使用 Testlib Checker 匹配模式的题目没有指定 Checker 位置。",
+    "core.problem_validator.testlibJudgerNotFound" : "Testlib Checker {lib} 未找到。",
+    "core.problem_validator.statementNotFound" : "题面文件 {path} 未找到。",
+    "core.problem_validator.inNotFound" : "输入文件 {inf} 未找到。",
+    "core.problem_validator.outNotFound" : "输出文件 {ouf} 未找到。",
     "core.problem_validator.pfv" : "题目文件合法。",
 
     "resdown.ready" : "下面将为您下载 Hello Judger Reborn 所需要的资源文件。",
