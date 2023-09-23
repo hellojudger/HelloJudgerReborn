@@ -26,6 +26,15 @@
     "core.signals.wa" : "答案错误",
     "core.signals.jf" : "评测失败",
     "core.signals.pc" : "部分正确",
+    "core.signals.pfi" : "题目文件不合法",
+    "core.signals.pfv" : "题目文件合法",
+
+    "core.problem_validator.interactiveNoLibrary" : "交互题没有指定交互库。",
+    "core.problem_validator.subtaskIdInvalid" : "子任务编号 {sid} 不合法。",
+    "core.problem_validator.subtaskIdInvalidInRequired" : "子任务 {sid} 的某一个依赖子任务的编号大于等于 {sid}。",
+    "core.problem_validator.realJudgerWithoutPrecision" : "使用实数匹配模式的题目没有指定匹配精度。",
+    "core.problem_validator.testlibJudgerWithoutPath" : "使用 Testlib Checker 匹配模式的题目没有指定 Checker 位置。",
+    "core.problem_validator.pfv" : "题目文件合法。",
 
     "resdown.ready" : "下面将为您下载 Hello Judger Reborn 所需要的资源文件。",
     "resdown.changePipMirrow" : "您希望将 pip 源改为清华源以提升在国内的安装速度吗？(y|others)",

@@ -1,11 +1,4 @@
-# pylint:disable = all
-
-from core.problem_validator import validate_format
-from i18n import switch_language
-
-switch_language("zh_CN")
-
-print(validate_format({
+{
     "name" : "测试题目",
     "statements" : [
         {
@@ -22,6 +15,22 @@ print(validate_format({
             "memory" : 1073741824,
             "mark" : 100,
             "subtask" : 1
+        },
+        {
+            "in" : "2.in",
+            "out" : "2.out",
+            "time" : 1000,
+            "memory" : 1073741824,
+            "mark" : 100,
+            "subtask" : 1
+        },
+        {
+            "in" : "3.in",
+            "out" : "3.out",
+            "time" : 1000,
+            "memory" : 1073741824,
+            "mark" : 100,
+            "subtask" : 2
         }
     ],
     "subtasks" : [
@@ -29,9 +38,5 @@ print(validate_format({
             "method" : "sum",
             "required" : []
         }
-    ],
-    "type" : "traditional",
-    "judger" : {
-        "id" : "row"
-    }
-}))
+    ]
+}

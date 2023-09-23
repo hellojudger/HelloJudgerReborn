@@ -75,3 +75,12 @@ class PartiallyCorrect(TestlibSignal):
     is_points = False
     points = 0
     partially = 0.0
+
+class ProblemSignal(CoreSignal):
+    pass
+
+class ProblemFileInvalid(CoreSignal):
+    signame = "pfi"
+
+class ProblemFileValid(CoreSignal):
+    signame = "pfv"
