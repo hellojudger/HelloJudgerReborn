@@ -1,11 +1,23 @@
 # pylint:disable = all
 from urllib.request import urlopen
-from typing import List
+from typing import List, Union, Optional
 from os import getcwd, mkdir
 from os.path import isdir
 from i18n import _
+import os, sys
+from importlib import import_module
 
 print(_("resdown.ready"))
+tsinghua = input(_("resdown.changePipMirrow"))
+if tsinghua.lower() == "y":
+    pip_command = "\"{}\" -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple {} --quiet --disable-pip-version-check"
+else:
+    pip_command = "\"{}\" -m pip install {} --quiet --disable-pip-version-check"
+github_mirrow = input(_("resdown.changeGithubMirrow"))
+if github_mirrow.lower() == "y":
+    github_pre = "https://gh.api.99988866.xyz/"
+else:
+    github_pre = ""
 
 DOWNLOAD_TIMEOUT = 10
 
@@ -33,28 +45,58 @@ class Resource:
             return False
         else:
             return True
-    
-tasks : List[Resource] = list()
+
+class Module:
+    name = ""
+    import_name = ""
+
+    def __init__(self, name : str, import_name : Optional[str] = None):
+        self.name = name
+        if import_name is None:
+            import_name = self.name
+        self.import_name = import_name
+
+    def download(self):
+        try:
+            import_module(self.import_name)
+        except (ImportError, ModuleNotFoundError):
+            code = os.system("\"{}\" -m pip install {} --quiet --disable-pip-version-check".format(sys.executable, self.name))
+            if code != 0:
+                return False
+            try:
+                import_module(self.import_name)
+            except (ImportError, ModuleNotFoundError):
+                return False
+            return True
+        else:
+            return True
+
+
+tasks : List[Union[Resource, Module]] = list()
 tasks.append(Resource(
-    "https://raw.githubusercontent.com/MikeMirzayanov/testlib/master/testlib.h",
+    github_pre + "https://raw.githubusercontent.com/MikeMirzayanov/testlib/master/testlib.h",
     "testlib_sandbox/testlib.h",
     "Testlib"
 ))
+tasks.append(Module("psutil"))
+tasks.append(Module("simplejson"))
 
 done = 0
 fail = 0
+donef = "\033[1;32m" + _("resdown.done") + "\033[0m"
+failf = "\033[1;31m" + _("resdown.fail") + "\033[0m"
 
 for i in range(len(tasks)):
     task = tasks[i]
     print(_("resdown.task").format(id = i + 1, name = task.name), end="... ")
     if task.download():
-        print(_("resdown.done"))
+        print(donef)
         done += 1
     else:
-        print(_("resdown.fail"))
+        print(failf)
         fail += 1
 
-print(_("resdown.end").format(done = done, fail = fail))
+print(_("resdown.end").format(done = done, fail = fail, dos = donef, fas = failf))
 
 print(_("resdown.pause"))
 input()

@@ -28,9 +28,11 @@
     "core.signals.pc" : "部分正确",
 
     "resdown.ready" : "下面将为您下载 Hello Judger Reborn 所需要的资源文件。",
+    "resdown.changePipMirrow" : "您希望将 pip 源改为清华源以提升在国内的安装速度吗？(y|others)",
+    "resdown.changeGithubMirrow" : "您希望使用 Github 镜像吗？(y|others)",
     "resdown.task" : "任务 #{id}: {name}",
     "resdown.done" : "成功",
     "resdown.fail" : "失败",
-    "resdown.end" : "下载结束。{done} 件任务成功，{fail} 件任务失败。",
-    "resdown.pause" : "按下 <Enter> 键以退出本程序。"
+    "resdown.end" : "下载结束。{done} 件任务{dos}，{fail} 件任务{fas}。",
+    "resdown.pause" : "请按下 <Enter> 键以退出本程序。"
 }

@@ -28,9 +28,11 @@
     "core.signals.pc" : "Partially Correct",
 
     "resdown.ready" : "Ready to download resources for Hello Judger Reborn.",
+    "resdown.changePipMirrow" : "Do you want to change the pip index into Tsinghua Pip Mirrow?(y|others)",
+    "resdown.changeGithubMirrow" : "Do you want to use the Github mirrow?(y|others)",
     "resdown.task" : "Task #{id}: {name}",
     "resdown.done" : "done",
     "resdown.fail" : "failed",
-    "resdown.end" : "Finished. {done} task(s) done, {fail} task(s) failed.",
-    "resdown.pause" : "Press <Enter> to quit this program."
+    "resdown.end" : "Finished. {done} task(s) {dos}, {fail} task(s) {fas}.",
+    "resdown.pause" : "Please press <Enter> to quit this program."
 }

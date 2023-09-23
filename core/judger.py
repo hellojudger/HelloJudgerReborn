@@ -142,7 +142,7 @@ class TestlibJudger(Judger):
         with open(ansf, "w", encoding="utf-8") as f:
             f.write(ans)
         sig = CPP_14.run_interpret(
-            "{} {} {} {} {} -appes".format(spj, inf, ouf, ansf, resf), 
+            "{} \"{}\" \"{}\" \"{}\" \"{}\" -appes".format(spj, inf, ouf, ansf, resf), 
             Limits(CORE.spj_time_limit, CORE.spj_memory_limit)
         )
         tree = cElementTree.parse(resf)

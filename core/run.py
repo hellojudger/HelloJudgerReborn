@@ -49,7 +49,7 @@ class ProgammingLanguage:
         return CompilationFinished(_("core.run.compilationFinished"))
 
     def run_interpret(self, executable : PathLike, limits : Limits, stdin : PathLike = None):
-        executable = abspath(executable)
+        executable = "\"{}\"".format(abspath(executable))
         if system() == "Linux":
             run_shell("chmod +x {}".format(executable.split(' ')[0]))
         if stdin is not None:

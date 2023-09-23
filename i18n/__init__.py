@@ -20,8 +20,10 @@ if locale not in languages:
 with open("i18n/{}.json".format(locale), "r", encoding="utf-8") as fp:
     obj = json.load(fp)
 
-def _(content : str) -> str:
+def translate(content : str) -> str:
     return obj.get(content, content)
+
+_ = translate
 
 def switch_language(new : str):
     global locale, languages, obj
