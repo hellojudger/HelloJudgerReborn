@@ -60,7 +60,7 @@ class Module:
         try:
             import_module(self.import_name)
         except (ImportError, ModuleNotFoundError):
-            code = os.system("\"{}\" -m pip install {} --quiet --disable-pip-version-check".format(sys.executable, self.name))
+            code = os.system(pip_command.format(sys.executable, self.name))
             if code != 0:
                 return False
             try:
