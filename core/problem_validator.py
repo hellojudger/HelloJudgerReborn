@@ -130,9 +130,19 @@ schema = {
             "type" : "string",
             "minLength" : 1,
             "maxLength" : 65535
+        },
+        "all" : {
+            "type" : "object",
+            "properties" : {
+                "method" : {
+                    "type" : "string",
+                    "enum" : ["min", "max", "sum"]
+                }
+            },
+            "required" : ["method"]
         }
     },
-    "required" : ["name", "statements", "testcases", "subtasks", "type", "judger"]
+    "required" : ["name", "statements", "testcases", "subtasks", "type", "judger", "all"]
 }
 
 def validate(path : str):

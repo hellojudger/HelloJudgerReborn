@@ -28,6 +28,7 @@
     "core.signals.pc" : "Partially Correct",
     "core.signals.pfi" : "Problem File Invalid",
     "core.signals.pfv" : "Problem File Valid",
+    "core.signals.sk" : "Skipped",
 
     "core.problem_validator.interactiveNoLibrary" : "The interactive problem has not been assigned an interactive library.",
     "core.problem_validator.interactiveLibraryNotFound" : "The interactive library {lib} was not found.",
@@ -40,6 +41,8 @@
     "core.problem_validator.inNotFound" : "An input file {inf} was not found.",
     "core.problem_validator.outNotFound" : "An output file {ouf} was not found.",
     "core.problem_validator.pfv" : "Problem file is valid.",
+
+    "core.problem.skipped" : "This testcase havn't been run but was skipped.",
 
     "resdown.ready" : "Ready to download resources for Hello Judger Reborn.",
     "resdown.changePipMirrow" : "Do you want to change the pip index into Tsinghua Pip Mirrow?(y|others)",

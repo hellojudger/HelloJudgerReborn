@@ -6,8 +6,11 @@ import simplejson as json
 from typing import List
 from uuid import uuid4
 import os, shutil
-from core.run import ProgammingLanguage, Limits
+from core.run import ProgrammingLanguage, Limits, CPP
 from core.judger import StrictCompare, RowCompare, RealCompare, TestlibJudger
+from i18n import _
+from threading import Thread
+from copy import deepcopy
 
 
 class ValidationError(Exception):
@@ -35,19 +38,23 @@ class Statement:
 
 class Testcase:
     in_ = ""
+    short_in = ""
     out = ""
+    short_out = ""
     time = 0
     memory = 0
     subtask = 0
     mark = 0
 
-    def __init__(self, inf : str, ouf : str, time : int, memory : int, subtask : int, mark : float):
+    def __init__(self, inf : str, ouf : str, time : int, memory : int, subtask : int, mark : float, short_in : str, short_out : str):
         self.in_ = inf
         self.out = ouf
         self.time = time
         self.memory = memory
         self.subtask = subtask
         self.mark = mark
+        self.short_in = short_in
+        self.short_out = short_out
 
 
 class Subtask:
@@ -100,13 +107,13 @@ class Problem:
     def subtasks(self) -> List[Subtask]:
         arr = {}
         for i in self.data["testcases"]:
-            j = i
+            j = deepcopy(i)
             j["in"] = "{}/data/{}".format(self.path, i["in"])
             j["out"] = "{}/data/{}".format(self.path, i["out"])
             j["subtask"] -= 1
             if j["subtask"] not in list(arr.keys()):
                 arr[j["subtask"]] = []
-            arr[j["subtask"]].append(Testcase(j["in"], j["out"], j["time"], j["memory"], j["subtask"], j["mark"]))
+            arr[j["subtask"]].append(Testcase(j["in"], j["out"], j["time"], j["memory"], j["subtask"], j["mark"], i["in"], i["out"]))
         ret = []
         for cnt, i in enumerate(self.data["subtasks"]):
             ret.append(Subtask(i["method"], i["required"], arr[cnt]))
@@ -120,7 +127,7 @@ class Problem:
 
 COMPILE_FINISHED = 0
 COMPILE_ERROR = 1
-INTERACTIVE_LIB_COMPILE_ERROR = 3
+TESTLIB_COMPILE_ERROR = 2
 
 class JudgeInfo:
     subtask = 0
@@ -144,33 +151,49 @@ class JudgeInfo:
 def _slot(info : JudgeInfo):
     print(info.subtask, info.in_, info.out, info.signal, info.time_used, info.memory_used, info.mark)
 
+def async_function_decorator(f):
+    def wrapper(*args, **kwargs):
+        thr = Thread(target=f, args=args, kwargs=kwargs)
+        thr.start()
+    return wrapper
 
-def judgement(problem : Problem, code : str, lang : ProgammingLanguage, slot = _slot):
+def judgement(problem : Problem, code : str, lang : ProgrammingLanguage, slot_function = _slot):
+    @async_function_decorator
+    def slot(*args, **kwargs):
+        slot_function(*args, **kwargs)
     subtasks = problem.subtasks()
+    if not os.path.isdir(os.path.abspath("run_sandbox")):
+        os.mkdir("run_sandbox")
     uuid = str(uuid4())
+    need_remove = []
     source = os.path.abspath("run_sandbox/{}.cpp".format(uuid))
+    need_remove.append(source)
     with open(source, "w", encoding="utf-8") as f:
         f.write(code)
     executable = os.path.abspath("run_sandbox/{}.exe".format(uuid))
+    need_remove.append(executable)
     source = "\"{}\"".format(source)
     executable = "\"{}\"".format(executable)
     if problem.type() == "interactive_noi":
         library_ = "{}/libraries/{}".format(problem.path, problem.data["interactive_library"])
         library = os.path.abspath("run_sandbox/{}.noiintlib.cpp".format(uuid))
+        need_remove.append(library)
         shutil.copyfile(library_, library)
         source += " \"{}\"".format(library)
     sig = lang.run_compile(source, executable)
     if sig != CompilationFinished():
-        return [COMPILE_ERROR, sig]
+        return [COMPILE_ERROR, sig, 0]
     if problem.judger().id == "testlib":
         testlib_source = os.path.abspath("run_sandbox/{}.checker.cpp".format(uuid))
         shutil.copyfile(problem.judger().kwargs["path"], testlib_source)
         testlib_executable = os.path.abspath("run_sandbox/{}.checker.exe".format(uuid))
+        need_remove.append(testlib_source)
+        need_remove.append(testlib_executable)
         testlib_source = "\"{}\"".format(source)
         testlib_executable = "\"{}\"".format(executable)
-        sig = lang.run_compile(testlib_source, testlib_executable)
+        sig = CPP.run_compile(testlib_source, testlib_executable)
         if sig != CompilationFinished():
-            return [TESTLIB_COMPILE_ERROR, sig]
+            return [TESTLIB_COMPILE_ERROR, sig, 0]
     if problem.judger().id == "testlib":
         judger = TestlibJudger(path = testlib_executable)
     elif problem.judger().id == "real":
@@ -181,6 +204,7 @@ def judgement(problem : Problem, code : str, lang : ProgammingLanguage, slot = _
         judger = RowCompare()
     accepted = []
     total = []
+    slot(JudgeInfo(-1, "", "", sig, 0, 0, 0))
     for cnt, i in enumerate(subtasks):
         answer = 0
         skipped = False
@@ -188,12 +212,12 @@ def judgement(problem : Problem, code : str, lang : ProgammingLanguage, slot = _
             if not accepted[j - 1]:
                 skipped = True
                 break
-        if i.method == "min":
+        if i.method == "min" and len(i.testcases) > 0:
             answer = pow(2, 31)
         now_ac = True
         for j in i.testcases:
             if skipped:
-                slot(JudgeInfo(cnt+1, j.in_, j.out, Skipped(), 0, 0, 0))
+                slot(JudgeInfo(cnt+1, j.short_in, j.short_out, Skipped(_("core.problem.skipped")), 0, 0, 0))
                 continue
             sig = lang.run_interpret(executable, Limits(j.time, j.memory), j.in_)
             if sig == NextJudge():
@@ -206,12 +230,7 @@ def judgement(problem : Problem, code : str, lang : ProgammingLanguage, slot = _
                 osig.time = sig.time_used
                 osig.memory_used = sig.memory_used
                 tmark = 0
-                if osig == WrongAnswer():
-                    now_ac = False
-                    if i.method == "min":
-                        skipped = True
-                        answer = 0
-                elif osig == Accepted():
+                if osig == Accepted():
                     tmark = j.mark
                     if i.method == "max":
                         answer = max(answer, float(j.mark))
@@ -231,13 +250,30 @@ def judgement(problem : Problem, code : str, lang : ProgammingLanguage, slot = _
                         answer = min(answer, tmark)
                     if i.method == "sum":
                         answer = (answer + tmark)
-                slot(JudgeInfo(cnt, j.in_, j.out, osig, sig.time_used, sig.memory_used, tmark))
+                else:
+                    now_ac = False
+                    if i.method == "min":
+                        skipped = True
+                        answer = 0
+                slot(JudgeInfo(cnt + 1, j.short_in, j.short_out, osig, sig.time_used, sig.memory_used, tmark))
             else:
                 now_ac = False
-                slot(JudgeInfo(cnt, j.in_, j.out, sig, sig.time_used, sig.memory_used, 0))
+                slot(JudgeInfo(cnt + 1, j.short_in, j.short_out, sig, sig.time_used, sig.memory_used, 0))
                 if i.method == "min":
                     skipped = True
                     answer = 0
         accepted.append(now_ac)
         total.append(answer)
-    return [COMPILE_FINISHED, total]
+    result = 0
+    if problem.data["all"]["method"] == "sum":
+        result = sum(total)
+    elif problem.data["all"]["method"] == "min":
+        result = min(total)
+    elif problem.data["all"]["method"] == "max":
+        result = max(total)
+    for i in need_remove:
+        try:
+            os.remove(i)
+        except:
+            pass
+    return [COMPILE_FINISHED, total, result]

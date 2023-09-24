@@ -28,6 +28,7 @@
     "core.signals.pc" : "部分正确",
     "core.signals.pfi" : "题目文件不合法",
     "core.signals.pfv" : "题目文件合法",
+    "core.signals.sk" : "被忽略",
 
     "core.problem_validator.interactiveNoLibrary" : "交互题没有指定交互库。",
     "core.problem_validator.interactiveLibraryNotFound" : "交互库 {lib} 未找到。",
@@ -40,6 +41,8 @@
     "core.problem_validator.inNotFound" : "输入文件 {inf} 未找到。",
     "core.problem_validator.outNotFound" : "输出文件 {ouf} 未找到。",
     "core.problem_validator.pfv" : "题目文件合法。",
+
+    "core.problem.skipped" : "该测试点未经过评测，而是被忽略。",
 
     "resdown.ready" : "下面将为您下载 Hello Judger Reborn 所需要的资源文件。",
     "resdown.changePipMirrow" : "您希望将 pip 源改为清华源以提升在国内的安装速度吗？(y|others)",

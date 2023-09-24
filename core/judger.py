@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 import xml.etree.cElementTree as cElementTree
 from core.signals import *
 from i18n import _
-from core.run import CPP_14, Limits
+from core.run import CPP, Limits
 from typing import Optional
 from core.config import CORE
 from os import mkdir, remove
@@ -141,7 +141,7 @@ class TestlibJudger(Judger):
             f.write(out)
         with open(ansf, "w", encoding="utf-8") as f:
             f.write(ans)
-        sig = CPP_14.run_interpret(
+        sig = CPP.run_interpret(
             "{} \"{}\" \"{}\" \"{}\" \"{}\" -appes".format(spj, inf, ouf, ansf, resf), 
             Limits(CORE.spj_time_limit, CORE.spj_memory_limit)
         )

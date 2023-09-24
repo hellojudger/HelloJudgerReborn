@@ -19,7 +19,7 @@ class Limits:
         self.time_limit = time_limit
 
 
-class ProgammingLanguage:
+class ProgrammingLanguage:
     compile_format : str = ""
     interpret_format : str = ""
 
@@ -96,4 +96,4 @@ class ProgammingLanguage:
         obj.time_used = (end - start) * 1000
         return obj
 
-CPP_14 = ProgammingLanguage("g++ -o {executable} {source} -std=c++14", "{executable}")
+CPP = ProgrammingLanguage("g++ -o {executable} {source} -O2", "{executable}")

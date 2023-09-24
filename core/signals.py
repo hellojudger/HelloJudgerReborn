@@ -38,9 +38,6 @@ class InterpretionSignal(CoreSignal):
     time_used = 0
     memory_used = 0
 
-    def __str__(self):
-        return "{} : {} Time used: {} ms Memory used: {} MB.".format(self.name(), self.message, self.time_used, self.memory_used / 1024 / 1024)
-
 class TimeLimitExceeded(InterpretionSignal):
     signame = "tle"
 
