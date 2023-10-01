@@ -11,6 +11,7 @@ from core.judger import StrictCompare, RowCompare, RealCompare, TestlibJudger
 from i18n import _
 from threading import Thread
 from copy import deepcopy
+from core.config import CORE
 
 
 class ValidationError(Exception):
@@ -161,38 +162,47 @@ def judgement(problem : Problem, code : str, lang : ProgrammingLanguage, slot_fu
     @async_function_decorator
     def slot(*args, **kwargs):
         slot_function(*args, **kwargs)
+    @async_function_decorator
+    def clean(need_remove):
+        for i in need_remove:
+            try:
+                os.remove(i)
+            except:
+                pass
     subtasks = problem.subtasks()
-    if not os.path.isdir(os.path.abspath("run_sandbox")):
-        os.mkdir("run_sandbox")
+    if not os.path.isdir(os.path.abspath(CORE.run_sandbox)):
+        os.mkdir(CORE.run_sandbox)
     uuid = str(uuid4())
     need_remove = []
-    source = os.path.abspath("run_sandbox/{}.cpp".format(uuid))
+    source = os.path.abspath("{}/{}.cpp".format(CORE.run_sandbox, uuid))
     need_remove.append(source)
     with open(source, "w", encoding="utf-8") as f:
         f.write(code)
-    executable = os.path.abspath("run_sandbox/{}.exe".format(uuid))
+    executable = os.path.abspath("{}/{}.exe".format(CORE.run_sandbox, uuid))
     need_remove.append(executable)
     source = "\"{}\"".format(source)
     executable = "\"{}\"".format(executable)
     if problem.type() == "interactive_noi":
         library_ = "{}/libraries/{}".format(problem.path, problem.data["interactive_library"])
-        library = os.path.abspath("run_sandbox/{}.noiintlib.cpp".format(uuid))
+        library = os.path.abspath("{}/{}.noiintlib.cpp".format(CORE.run_sandbox, uuid))
         need_remove.append(library)
         shutil.copyfile(library_, library)
         source += " \"{}\"".format(library)
     sig = lang.run_compile(source, executable)
     if sig != CompilationFinished():
+        clean(need_remove)
         return [COMPILE_ERROR, sig, 0]
     if problem.judger().id == "testlib":
-        testlib_source = os.path.abspath("run_sandbox/{}.checker.cpp".format(uuid))
+        testlib_source = os.path.abspath("{}/{}.checker.cpp".format(CORE.run_sandbox, uuid))
         shutil.copyfile(problem.judger().kwargs["path"], testlib_source)
-        testlib_executable = os.path.abspath("run_sandbox/{}.checker.exe".format(uuid))
+        testlib_executable = os.path.abspath("{}/{}.checker.exe".format(CORE.run_sandbox, uuid))
         need_remove.append(testlib_source)
         need_remove.append(testlib_executable)
         testlib_source = "\"{}\"".format(source)
         testlib_executable = "\"{}\"".format(executable)
         sig = CPP.run_compile(testlib_source, testlib_executable)
         if sig != CompilationFinished():
+            clean(need_remove)
             return [TESTLIB_COMPILE_ERROR, sig, 0]
     if problem.judger().id == "testlib":
         judger = TestlibJudger(path = testlib_executable)
@@ -271,9 +281,5 @@ def judgement(problem : Problem, code : str, lang : ProgrammingLanguage, slot_fu
         result = min(total)
     elif problem.data["all"]["method"] == "max":
         result = max(total)
-    for i in need_remove:
-        try:
-            os.remove(i)
-        except:
-            pass
+    clean(need_remove)
     return [COMPILE_FINISHED, total, result]
