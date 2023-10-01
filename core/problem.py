@@ -70,7 +70,7 @@ class Subtask:
     def __repr__(self):
         return str(self.testcases)
 
-class Judger:
+class ProblemJudger:
     id = ""
     kwargs = {}
 
@@ -119,11 +119,11 @@ class Problem:
             ret.append(Subtask(i["method"], i["required"], arr[cnt]))
         return ret
 
-    def judger(self) -> Judger:
+    def judger(self) -> ProblemJudger:
         data = self.data["judger"]
         if data.get("path") is not None:
             data["path"] = "{}/libraries/{}".format(self.path, data["path"])
-        return Judger(**data)
+        return ProblemJudger(**data)
 
 COMPILE_FINISHED = 0
 COMPILE_ERROR = 1
