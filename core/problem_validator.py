@@ -8,7 +8,7 @@ import os
 
 schema = {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id" : "http://github.com/hellojudger/HellojudgerRreborn/problem.schema",
+    "$id" : "http://github.com/hellojudger/HellojudgerReborn/problem.schema",
     "definitions": {
         "statement" : {
             "type" : "object",
