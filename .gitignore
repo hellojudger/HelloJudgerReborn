@@ -9,3 +9,8 @@ run_sandbox/
 
 # VSCode files
 .vscode/
+
+# Examples
+example_data/
+examplepro/
+1.cpp
