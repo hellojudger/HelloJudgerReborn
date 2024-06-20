@@ -51,5 +51,14 @@
     "resdown.done" : "done",
     "resdown.fail" : "failed",
     "resdown.end" : "Finished. {done} task(s) {dos}, {fail} task(s) {fas}.",
-    "resdown.pause" : "Please press <Enter> to quit this program."
+    "resdown.pause" : "Please press <Enter> to quit this program.",
+
+    "frontend.judge.subtaskView" : "Subtask View",
+    "frontend.judge.taskPerSubtaskView" : "Task Per Subtask View",
+    "frontend.judge.id" : "ID",
+    "frontend.judge.status" : "Subtask",
+    "frontend.judge.total" : "Total",
+    "frontend.judge.pending" : "Pending",
+    "frontend.judge.unknown" : "Unknown",
+    "frontend.judge.subtaskWithId" : "[bold]Subtask #{id}[/ bold]"
 }

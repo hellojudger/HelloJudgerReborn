@@ -148,9 +148,24 @@ class JudgeInfo:
         self.memory_used = memory_used
         self.mark = mark
 
+class SubtaskInfo:
+    subtask = 0
+    status = Unaccepted()
+    mark = 0
+    total = 0
+
+    def __init__(self, subtask : int, status, mark : int, total : int):
+        self.subtask = subtask
+        self.status = status
+        self.mark = mark
+        self.total = total
+
 
 def _slot(info : JudgeInfo):
     print(info.subtask, info.in_, info.out, info.signal, info.time_used, info.memory_used, info.mark)
+
+def _slot2(info : SubtaskInfo):
+    print(info.subtask, info.status, info.mark, info.total)
 
 def async_function_decorator(f):
     def wrapper(*args, **kwargs):
@@ -158,11 +173,13 @@ def async_function_decorator(f):
         thr.start()
     return wrapper
 
-def judgement(problem : Problem, code : str, lang : ProgrammingLanguage, slot_function = _slot):
-    @async_function_decorator
+def judgement(problem : Problem, code : str, lang : ProgrammingLanguage, slot_function = _slot, slot2_function = _slot2):
+    # @async_function_decorator
     def slot(*args, **kwargs):
         slot_function(*args, **kwargs)
-    @async_function_decorator
+    def slot2(*args, **kwargs):
+        slot2_function(*args, **kwargs)
+    # @async_function_decorator
     def clean(need_remove):
         for i in need_remove:
             try:
@@ -272,6 +289,17 @@ def judgement(problem : Problem, code : str, lang : ProgrammingLanguage, slot_fu
                 if i.method == "min":
                     skipped = True
                     answer = 0
+        full_score = 0
+        if i.method == "min" and len(i.testcases) > 0:
+            full_score = pow(2, 31)
+        for j in i.testcases:
+            if i.method == "max":
+                answer = max(answer, float(j.mark))
+            if i.method == "min":
+                answer = min(answer, float(j.mark))
+            if i.method == "sum":
+                answer = (answer + float(j.mark))
+        slot2(SubtaskInfo(i, Skipped() if skipped else (Unaccepted() if not now_ac else Accepted()), answer, full_score))   
         accepted.append(now_ac)
         total.append(answer)
     result = 0

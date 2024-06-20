@@ -84,3 +84,6 @@ class ProblemFileValid(ProblemSignal):
 
 class Skipped(CoreSignal):
     signame = "sk"
+
+class Unaccepted(CoreSignal):
+    signame = "unac"
