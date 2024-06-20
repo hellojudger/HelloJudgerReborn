@@ -131,6 +131,12 @@ def main(path, file, lang):
         return
     con.log_success("测试完成！")
     con.print(con.mark("得分：") + score_markup(ans[2], ans[3]))
+    if ans[2] == ans[3]:
+        con.log_success("恭喜你通过了本题！快去试试下一题吧！")
+    elif ans[2] != 0:
+        con.log_attention("很遗憾，你并没有通过本题，请尝试修改代码，然后再测试一次。")
+    else:
+        con.log_err("很遗憾，你爆零了，不要灰心，继续加油！")
     record = con.export_html()
     if con.confirm("是否将测试结果导出为 HTML？", default=True):
         fn = "hjreborn-submission-" + gen_uuid() + ".html"
