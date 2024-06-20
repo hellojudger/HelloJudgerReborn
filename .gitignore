@@ -2,6 +2,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
+build/
+dist/
+hjreborn.egg-info/
 
 # Resources and testing file
 testlib_sandbox/
