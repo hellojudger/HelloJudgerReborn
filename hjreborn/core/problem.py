@@ -138,8 +138,9 @@ class JudgeInfo:
     time_used = 0
     memory_used = 0
     mark = 0
+    total = 0
 
-    def __init__(self, subtask : int, in_ : str, out : str, signal, time_used, memory_used, mark):
+    def __init__(self, subtask : int, in_ : str, out : str, signal, time_used : int, memory_used : int, mark : int, total : int):
         self.subtask = subtask
         self.in_ = in_
         self.out = out
@@ -147,6 +148,7 @@ class JudgeInfo:
         self.time_used = time_used
         self.memory_used = memory_used
         self.mark = mark
+        self.total = total
 
 class SubtaskInfo:
     subtask = 0
@@ -231,8 +233,22 @@ def judgement(problem : Problem, code : str, lang : ProgrammingLanguage, slot_fu
         judger = RowCompare()
     accepted = []
     total = []
-    slot(JudgeInfo(-1, "", "", sig, 0, 0, 0))
+    all_ac_score = 0
+    total_all_ac = []
+    total_all_ac_ret = 0
+    # slot(JudgeInfo(-1, "", "", sig, 0, 0, 0, 0))
     for cnt, i in enumerate(subtasks):
+        full_score = 0
+        if i.method == "min" and len(i.testcases) > 0:
+            full_score = pow(2, 31)
+        for j in i.testcases:
+            if i.method == "max":
+                full_score = max(full_score, float(j.mark))
+            if i.method == "min":
+                full_score = min(full_score, float(j.mark))
+            if i.method == "sum":
+                full_score = (full_score + float(j.mark))
+        total_all_ac.append(full_score)
         answer = 0
         skipped = False
         for j in i.required:
@@ -244,7 +260,7 @@ def judgement(problem : Problem, code : str, lang : ProgrammingLanguage, slot_fu
         now_ac = True
         for j in i.testcases:
             if skipped:
-                slot(JudgeInfo(cnt+1, j.short_in, j.short_out, Skipped(_("core.problem.skipped")), 0, 0, 0))
+                slot(JudgeInfo(cnt+1, j.short_in, j.short_out, Skipped(_("core.problem.skipped")), 0, 0, 0, j.mark))
                 continue
             sig = lang.run_interpret(executable, Limits(j.time, j.memory), j.in_)
             if sig == NextJudge():
@@ -282,32 +298,25 @@ def judgement(problem : Problem, code : str, lang : ProgrammingLanguage, slot_fu
                     if i.method == "min":
                         skipped = True
                         answer = 0
-                slot(JudgeInfo(cnt + 1, j.short_in, j.short_out, osig, sig.time_used, sig.memory_used, tmark))
+                slot(JudgeInfo(cnt + 1, j.short_in, j.short_out, osig, sig.time_used, sig.memory_used, tmark, j.mark))
             else:
                 now_ac = False
-                slot(JudgeInfo(cnt + 1, j.short_in, j.short_out, sig, sig.time_used, sig.memory_used, 0))
+                slot(JudgeInfo(cnt + 1, j.short_in, j.short_out, sig, sig.time_used, sig.memory_used, 0, j.mark))
                 if i.method == "min":
                     skipped = True
                     answer = 0
-        full_score = 0
-        if i.method == "min" and len(i.testcases) > 0:
-            full_score = pow(2, 31)
-        for j in i.testcases:
-            if i.method == "max":
-                answer = max(answer, float(j.mark))
-            if i.method == "min":
-                answer = min(answer, float(j.mark))
-            if i.method == "sum":
-                answer = (answer + float(j.mark))
-        slot2(SubtaskInfo(i, Skipped() if skipped else (Unaccepted() if not now_ac else Accepted()), answer, full_score))   
+        slot2(SubtaskInfo(cnt + 1, Skipped() if skipped else (Unaccepted() if not now_ac else Accepted()), answer, full_score))   
         accepted.append(now_ac)
         total.append(answer)
     result = 0
     if problem.data["all"]["method"] == "sum":
         result = sum(total)
+        total_all_ac_ret = sum(total_all_ac)
     elif problem.data["all"]["method"] == "min":
         result = min(total)
+        total_all_ac_ret = min(total_all_ac)
     elif problem.data["all"]["method"] == "max":
         result = max(total)
+        total_all_ac_ret = max(total_all_ac)
     clean(need_remove)
-    return [COMPILE_FINISHED, total, result]
+    return [COMPILE_FINISHED, total, result, total_all_ac_ret]

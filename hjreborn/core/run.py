@@ -28,6 +28,8 @@ class ProgrammingLanguage:
         self.interpret_format = interpret_format
 
     def run_compile(self, source : PathLike, executable : PathLike):
+        if self.compile_format == "":
+            return CompilationFinished(_("core.run.compilationFinished"))
         compile_command = self.compile_format.format(source=source, executable=executable)
         process = subprocess.Popen(compile_command, shell=True, stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
         start = time.perf_counter()

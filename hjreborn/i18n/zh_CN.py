@@ -51,5 +51,14 @@ data = {
     "resdown.done" : "成功",
     "resdown.fail" : "失败",
     "resdown.end" : "下载结束。{done} 件任务{dos}，{fail} 件任务{fas}。",
-    "resdown.pause" : "请按下 <Enter> 键以退出本程序。"
+    "resdown.pause" : "请按下 <Enter> 键以退出本程序。",
+
+    "frontend.problem_maker.name" : "HelloJudger Reborn 题目快速制作工具",
+    "frontend.problem_maker.savePath" : "保存路径",
+    "frontend.problem_maker.savePathNotEmpty" : "题目目录不为空，将清除题目目录原有的所有数据，是否继续？",
+    "frontend.problem_maker.savePathNotEmptyCancelled" : "题目目录不为空，请重新输入。",
+    "frontend.problem_maker.invalidPath" : "路径不存在，请重新输入。",
+    "frontend.problem_maker.clearSavePath" : "正在清理题目目录...",
+    "frontend.problem_maker.basicInfo" : "基础信息",
+    "frontend.problem_maker.problemName" : "题目名称"
 }
