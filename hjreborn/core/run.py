@@ -2,11 +2,11 @@
 import subprocess
 import psutil
 from os import PathLike, system as run_shell
-from core.signals import *
-from core.config import CORE
+from hjreborn.core.signals import *
+from hjreborn.core.config import CORE
 from os.path import abspath
 from platform import system
-from i18n import _
+from hjreborn.i18n import _
 import time
 
 

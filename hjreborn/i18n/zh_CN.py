@@ -1,4 +1,4 @@
-{
+data = {
     "core.run.compilationTimeout" : "编译超时。",
     "core.run.compilationError" : "{err}\n编译器返回非零值 {code} 后结束。",
     "core.run.compilationFinished" : "编译成功。",

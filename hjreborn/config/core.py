@@ -1,4 +1,4 @@
-{
+data = {
     "compile_time_limit" : 10000,
     "memory_type" : "uss",
     "testlib_sandbox" : "testlib_sandbox",

@@ -1,17 +1,17 @@
 # pylint:disable = all
 
-from core.problem_validator import validate
-from core.signals import *
+from hjreborn.core.problem_validator import validate
+from hjreborn.core.signals import *
 import simplejson as json
 from typing import List
 from uuid import uuid4
 import os, shutil
-from core.run import ProgrammingLanguage, Limits, CPP
-from core.judger import StrictCompare, RowCompare, RealCompare, TestlibJudger
-from i18n import _
+from hjreborn.core.run import ProgrammingLanguage, Limits, CPP
+from hjreborn.core.judger import StrictCompare, RowCompare, RealCompare, TestlibJudger
+from hjreborn.i18n import _
 from threading import Thread
 from copy import deepcopy
-from core.config import CORE
+from hjreborn.core.config import CORE
 
 
 class ValidationError(Exception):

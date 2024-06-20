@@ -1,11 +1,11 @@
 # pylint: disable=all
 from abc import ABC, abstractmethod
 import xml.etree.cElementTree as cElementTree
-from core.signals import *
-from i18n import _
-from core.run import CPP, Limits
+from hjreborn.core.signals import *
+from hjreborn.i18n import _
+from hjreborn.core.run import CPP, Limits
 from typing import Optional
-from core.config import CORE
+from hjreborn.core.config import CORE
 from os import mkdir, remove
 from os.path import isdir, abspath
 import shutil

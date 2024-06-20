@@ -1,4 +1,4 @@
-{
+data = {
     "core.run.compilationTimeout" : "Compilation Timeout.",
     "core.run.compilationError" : "{err}\nCompile finished with non-zero exit code {code}.",
     "core.run.compilationFinished" : "Compiled successfully.",

@@ -2,8 +2,8 @@
 
 import jsonschema
 import simplejson as json
-from core.signals import *
-from i18n import _
+from hjreborn.core.signals import *
+from hjreborn.i18n import _
 import os
 
 schema = {

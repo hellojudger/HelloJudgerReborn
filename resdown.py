@@ -3,7 +3,7 @@ from urllib.request import urlopen
 from typing import List, Union, Optional
 from os import getcwd, mkdir
 from os.path import isdir
-from i18n import _
+from hjreborn.i18n import _
 import os, sys
 from importlib import import_module
 

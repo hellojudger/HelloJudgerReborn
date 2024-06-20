@@ -1,24 +1,23 @@
 # pylint:disable = all
 from locale import getdefaultlocale
 from os import listdir
-try:
-    import simplejson as json
-except (ImportError, ModuleNotFoundError):
-    import json
+import os.path
+import importlib
+
+this_path = os.path.split(os.path.abspath(__file__))[0]
 
 locale = getdefaultlocale()[0]
-_languages = listdir("i18n/")
+_languages = listdir(this_path)
 languages = []
 for i in _languages:
-    if i.endswith(".json"):
+    if i.endswith(".py") and i != "__init__.py":
         languages.append(i.split('.')[0])
 del _languages
 
 if locale not in languages:
     locale = "en_US"
 
-with open("i18n/{}.json".format(locale), "r", encoding="utf-8") as fp:
-    obj = json.load(fp)
+obj : dict = importlib.import_module("hjreborn.i18n.{}".format(locale)).data
 
 def translate(content : str) -> str:
     return obj.get(content, content)
@@ -30,5 +29,4 @@ def switch_language(new : str):
     locale = new
     if locale not in languages:
         locale = "en_US"
-    with open("i18n/{}.json".format(locale), "r", encoding="utf-8") as fp:
-        obj = json.load(fp)
+    obj = importlib.import_module("i18n.{}".format(locale)).data

@@ -1,5 +1,5 @@
 # pylint:disable = all
-from i18n import _
+from hjreborn.i18n import _
 
 class CoreSignal:
     signame : str = ""
