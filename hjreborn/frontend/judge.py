@@ -102,7 +102,7 @@ def main(path, file, lang):
 
     with open(os.path.join(path, "problem.json"), "r", encoding="utf-8") as f:
         problem = simplejson.load(f)
-        con.log_success(f"准备开始评测题目 ： {problem["name"]}")
+        con.log_success(f"准备开始评测题目 ： {problem['name']}")
         # task_id_habit = problem["task_id_habit"]
         # subtask_count = len(problem["subtasks"])
 
