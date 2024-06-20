@@ -59,6 +59,25 @@ def score_markup(score : int, total : int) -> TextMarkup:
     markup = markup.bold()
     return markup
 
+def signal_markup(signal : JudgeSignal | InterpretionSignal) -> TextMarkup:
+    markup = con.mark(signal.name())
+    if signal.signame == "ac":
+        markup = markup.color("green")
+    elif signal.signame == "wa":
+        markup = markup.color("red")
+    elif signal.signame == "tle":
+        markup = markup.color("purple4")
+    elif signal.signame == "mle":
+        markup = markup.color("purple3")
+    elif signal.signame == "re":
+        markup = markup.color("magenta")
+    elif signal.signame == "pc":
+        markup = markup.color("bright_cyan")
+    elif signal.signame == "jf":
+        markup = markup.color("turquoise4")
+    else:
+        markup = markup.color("grey37")
+    return markup
 
 def main(path, file, lang):
     if lang not in langs:
@@ -83,6 +102,7 @@ def main(path, file, lang):
 
     with open(os.path.join(path, "problem.json"), "r", encoding="utf-8") as f:
         problem = simplejson.load(f)
+        con.log_success(f"准备开始评测题目 ： {problem["name"]}")
         # task_id_habit = problem["task_id_habit"]
         # subtask_count = len(problem["subtasks"])
 
@@ -101,7 +121,7 @@ def main(path, file, lang):
         tc = tc_text(info.subtask, info.in_)
         markup += tc + con.mark(" ")
         markup += con.mark(emoji) + con.mark(" ")
-        markup += con.mark(info.signal.name()).bold() + con.mark(" ")
+        markup += signal_markup(info.signal).bold() + con.mark(" ")
         markup += con.mark(message) + con.mark(" ")
         markup += con.mark(time_).color("purple4") + con.mark(" ")
         markup += con.mark(memory).color("purple3") + con.mark(" ")
