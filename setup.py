@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="hjreborn",
-    version="0.1.0",
+    version="0.1.2",
     packages=[
         "hjreborn",
         "hjreborn.config",
@@ -22,6 +22,17 @@ setup(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: OS Independent",
+        "Environment :: Console",
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Education",
+        "Natural Language :: Chinese (Simplified)",
+        "Natural Language :: English",
+        "Topic :: Education",
+        "Programming Language :: Python :: 3 :: Only",
+        "Topic :: Software Development :: Testing",
+        "Topic :: Education :: Testing",
+        "Programming Language :: C++"
     ],
     license="AGPL-3.0",
     python_requires=">=3.8",
