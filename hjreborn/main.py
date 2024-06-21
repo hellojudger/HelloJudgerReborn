@@ -14,8 +14,7 @@ def exception_hook(etype, value, tb):
     exit(-1)
 
 
-if __name__ == "__main__":
-    sys.excepthook = exception_hook
+sys.excepthook = exception_hook
 
 
 @click.group(cls=click.Group)
@@ -42,11 +41,11 @@ def create():
 @click.option("--submission/--no-submission", default=True, is_flag=True)
 def clean(tmpfilestestlib: bool, tmpfilesrun: bool, submission: bool):
     with con.status("清理中..."):
-        if tmpfilestestlib:
+        if tmpfilestestlib and os.path.isdir(CORE.testlib_sandbox):
             for i in os.listdir(CORE.testlib_sandbox):
                 if i != "testlib.h":
                     os.remove(CORE.testlib_sandbox + "/" + i)
-        if tmpfilesrun:
+        if tmpfilesrun and os.path.isdir(CORE.run_sandbox):
             shutil.rmtree(CORE.run_sandbox)
         if submission:
             for i in os.listdir("."):
