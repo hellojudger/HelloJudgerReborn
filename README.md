@@ -19,9 +19,9 @@ This Python project is open source under the GNU Affero General Public License (
 
 # 安装与启动 / Install and Launch
 
-- 直接下载源码。
-- Just download the source code.
-- 运行 `resdown.py` 以下载资源。注意，需要从 Github 下载资源。该程序只需要运行一次。
-- Run `resdown.py` to download resources.This program don't need to run twice.
-- 运行主程序 `main.py`。
-- Run the main program `main.py`.
+-  安装 Python 3.8+
+- Install Python 3.8+
+- 若在 Windows 下，运行 `pip install hjreborn`；否则，运行 `pip3 install hjreborn`。
+- If you are on Windows, run `pip install hjreborn`; otherwise, run `pip3 install hjreborn`.
+- 运行 `hjreborn welcome` 查看帮助信息。
+- Run `hjreborn welcome` to view the help information.
