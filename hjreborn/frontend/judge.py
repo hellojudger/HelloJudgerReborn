@@ -8,6 +8,7 @@ import simplejson
 import uuid
 import subprocess
 import platform
+from typing import Union
 
 def gen_uuid() -> str:
     return str(uuid.uuid4())
@@ -59,7 +60,7 @@ def score_markup(score : int, total : int) -> TextMarkup:
     markup = markup.bold()
     return markup
 
-def signal_markup(signal : JudgeSignal | InterpretionSignal) -> TextMarkup:
+def signal_markup(signal : Union[JudgeSignal,InterpretionSignal]) -> TextMarkup:
     markup = con.mark(signal.name())
     if signal.signame == "ac":
         markup = markup.color("green")

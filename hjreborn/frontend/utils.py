@@ -2,6 +2,7 @@ import rich.console
 import simplejson
 import rich.prompt
 import rich.markdown
+from typing import Union, Optional
 
 __all__ = ["con"]
 
@@ -62,14 +63,14 @@ class Console:
     def mark(text: str) -> TextMarkup:
         return TextMarkup(text)
 
-    def print(self, *args, sep=" ", end="\n", justify : str | None = None):
+    def print(self, *args, sep=" ", end="\n", justify : Optional[str] = None):
         args = list(args)
         for i in range(len(args)):
             if isinstance(args[i], TextMarkup):
                 args[i] = args[i].done()
         self.console.print(*args, sep=sep, end=end, justify=justify)
 
-    def input(self, prompt: str, default: str = None, password: bool = False, choice : list[str] | None = None) -> str:
+    def input(self, prompt: str, default: str = None, password: bool = False, choice :Optional[list[str]] = None) -> str:
         text = rich.prompt.Prompt.ask(prompt = prompt, console = self.console, password = password, choices = choice, default = default)
         if text is None:
             text = ""
@@ -78,7 +79,7 @@ class Console:
     def confirm(self, prompt: str, default: bool = True) -> bool:
         return rich.prompt.Confirm.ask(prompt = prompt, console = self.console, default = default)
 
-    def json(self, data : str | list | dict):
+    def json(self, data : Union[str, list, dict]):
         if not isinstance(data, str):
             data_ = simplejson.dumps(data, indent=4)
         self.console.print_json(data_)
