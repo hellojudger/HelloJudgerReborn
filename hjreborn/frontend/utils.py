@@ -2,7 +2,7 @@ import rich.console
 import simplejson
 import rich.prompt
 import rich.markdown
-from typing import Union, Optional
+from typing import Union, Optional, List
 
 __all__ = ["con"]
 
@@ -70,7 +70,7 @@ class Console:
                 args[i] = args[i].done()
         self.console.print(*args, sep=sep, end=end, justify=justify)
 
-    def input(self, prompt: str, default: str = None, password: bool = False, choice :Optional[list[str]] = None) -> str:
+    def input(self, prompt: str, default: str = None, password: bool = False, choice :Optional[List[str]] = None) -> str:
         text = rich.prompt.Prompt.ask(prompt = prompt, console = self.console, password = password, choices = choice, default = default)
         if text is None:
             text = ""
